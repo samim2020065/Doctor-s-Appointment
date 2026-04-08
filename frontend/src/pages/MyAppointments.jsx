@@ -1,12 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
-import { AppContext } from "./../context/AppContext";
 import axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { AppContext } from "./../context/AppContext";
 
 function MyAppointments() {
   const { backendUrl, token, getDoctorsData } = useContext(AppContext);
 
   const [appointments, setAppointments] = useState([]);
+  const [loadingPaymentId, setLoadingPaymentId] = useState(null);
   const months = [
     "",
     "Jan",
@@ -68,6 +69,7 @@ function MyAppointments() {
 
   const handlePayment = async (appointmentId) => {
     try {
+      setLoadingPaymentId(appointmentId);
       const { data } = await axios.post(
         backendUrl + "/api/user/init",
         { appointmentId },
@@ -76,12 +78,26 @@ function MyAppointments() {
 
       console.log("PAYMENT RESPONSE:", data);
 
-      if (data.success) {
-        window.location.href = data.url;
+      if (!data.success) {
+        toast.error(data.message || "Unable to start payment");
+        return;
       }
+
+      if (!data.url) {
+        toast.error("Payment gateway URL not returned");
+        return;
+      }
+
+      window.location.assign(data.url);
     } catch (error) {
       console.log(error);
-      toast.error(error.message);
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Payment request failed";
+      toast.error(message);
+    } finally {
+      setLoadingPaymentId(null);
     }
   };
 
@@ -129,10 +145,14 @@ function MyAppointments() {
             <div className="flex flex-col gap-2 justify-end">
               {!item.cancelled && !item.payment && !item.isCompleted && (
                 <button
+                  type="button"
                   onClick={() => handlePayment(item._id)}
-                  className="text-sm text-stone-500 sm:min-w-48 py-2 border hover:bg-green-600 hover:text-white"
+                  disabled={loadingPaymentId === item._id}
+                  className={`text-sm text-stone-500 sm:min-w-48 py-2 border transition duration-200 ${loadingPaymentId === item._id ? "cursor-not-allowed opacity-70 bg-green-100" : "hover:bg-green-600 hover:text-white"}`}
                 >
-                  Pay Online
+                  {loadingPaymentId === item._id
+                    ? "Redirecting..."
+                    : "Pay Online"}
                 </button>
               )}
               {!item.cancelled && !item.payment && !item.isCompleted && (
@@ -155,7 +175,7 @@ function MyAppointments() {
               )}
               {item.isCompleted && (
                 <button className="sm:min-w-48 py-2 border border-green-500 rounded text-green-500">
-                Completed
+                  Completed
                 </button>
               )}
             </div>
