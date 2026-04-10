@@ -4,7 +4,7 @@ import appointmentModel from '../models/appointmentModel.js'
 const store_id = process.env.SSLCOMMERZ_STORE_ID
 const store_passwd = process.env.SSLCOMMERZ_STORE_PASSWORD
 const is_live = false
-const clientUrl = process.env.FRONTEND_URL || 'http://localhost:5173'
+const clientUrl = 'https://doctor-s-appointment-puce.vercel.app' || 'http://localhost:5173'
 
 // INIT PAYMENT
 export const initPayment = async (req, res) => {
@@ -22,9 +22,9 @@ export const initPayment = async (req, res) => {
             currency: 'BDT',
             tran_id: appointmentId,
 
-            success_url: `${process.env.BACKEND_URL || 'http://localhost:4000'}/api/user/success`,
-            fail_url: `${process.env.BACKEND_URL || 'http://localhost:4000'}/api/user/fail`,
-            cancel_url: `${process.env.BACKEND_URL || 'http://localhost:4000'}/api/user/cancel`,
+            success_url: `{'https://your-backend.onrender.com' || 'http://localhost:4000'}/api/user/success`,
+            fail_url: `{'https://your-backend.onrender.com' || 'http://localhost:4000'}/api/user/fail`,
+            cancel_url: `{'https://your-backend.onrender.com' || 'http://localhost:4000'}/api/user/cancel`,
 
             product_name: 'Doctor Appointment',
             product_category: 'Service',
