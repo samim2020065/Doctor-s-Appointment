@@ -22,9 +22,9 @@ export const initPayment = async (req, res) => {
             currency: 'BDT',
             tran_id: appointmentId,
 
-            success_url: `{'https://your-backend.onrender.com' || 'http://localhost:4000'}/api/user/success`,
-            fail_url: `{'https://your-backend.onrender.com' || 'http://localhost:4000'}/api/user/fail`,
-            cancel_url: `{'https://your-backend.onrender.com' || 'http://localhost:4000'}/api/user/cancel`,
+            success_url: `${'https://your-backend.onrender.com' || 'http://localhost:4000'}/api/user/success`,
+            fail_url: `${'https://your-backend.onrender.com' || 'http://localhost:4000'}/api/user/fail`,
+            cancel_url: `${'https://your-backend.onrender.com' || 'http://localhost:4000'}/api/user/cancel`,
 
             product_name: 'Doctor Appointment',
             product_category: 'Service',
