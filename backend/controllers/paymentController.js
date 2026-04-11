@@ -4,7 +4,8 @@ import appointmentModel from '../models/appointmentModel.js'
 const store_id = process.env.SSLCOMMERZ_STORE_ID
 const store_passwd = process.env.SSLCOMMERZ_STORE_PASSWORD
 const is_live = false
-const clientUrl = 'https://doctor-s-appointment-puce.vercel.app' || 'http://localhost:5173'
+//const clientUrl = 'https://doctor-s-appointment-puce.vercel.app' || 'http://localhost:5173'
+const clientUrl = process.env.FRONTEND_URL
 const serverUrl = process.env.BACKEND_URL
 // INIT PAYMENT
 export const initPayment = async (req, res) => {
