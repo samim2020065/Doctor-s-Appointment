@@ -56,6 +56,7 @@ export const initPayment = async (req, res) => {
 }
 
 export const paymentSuccess = async (req, res) => {
+     console.log("✅ SUCCESS HIT", req.body)
     try {
         const tran_id = req.body.tran_id || req.body.tranid || req.query.tran_id
 
